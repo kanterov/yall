@@ -1,0 +1,11 @@
+		Yet Another LISP-Like
+
+<code> ::= {<statement>}
+<statement> ::= "(", <function_name>, <parameters>, ")" | <number> | <identificator>
+<parameters> ::= <statement>, {<statement>}
+<identifier> ::= <symbol>, {<symbol> | <digit>}
+<digit> ::= "0" | ... | "9"
+<symbol> ::= "a" | ... | "z" | "A" | ... | "Z" | "_"
+<number> ::= [sign], <digit>, {digit}
+<sign> ::= "-" | "+"
+<function_name> ::= <identifier> | "+" | "-" | "*" | "/" | "?"

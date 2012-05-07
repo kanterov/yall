@@ -1,0 +1,7 @@
+<code> ::= { [label], <operation>, <linebreak> };
+<label> ::= <digit>, ":";
+<operation> ::= <math> | <cjmp> | <jmp> | "get" | "put" | "push" | "pop"
+    | "array" | "remove" | "check";
+<cjmp> ::= "cjmp", <labels>, <labels>;
+<cjmp> ::= "jmp", <labels>;
+<labels> ::= "{", <digit>, {<digit>}, "}";

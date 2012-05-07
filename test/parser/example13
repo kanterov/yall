@@ -1,0 +1,12 @@
+(list
+(def
+    (array
+        4
+        2)
+    var)
+(def
+    (get
+    4
+    var)
+    x
+))

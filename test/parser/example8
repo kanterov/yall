@@ -1,0 +1,15 @@
+(def
+    (array
+        1337
+        42
+    )
+    myArray
+)
+(def 
+    42
+    (def
+        1337
+        i)
+    )
+)
+

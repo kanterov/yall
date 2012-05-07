@@ -1,0 +1,209 @@
+\documentclass[a4paper,12pt,oneside]{article} 
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel} 
+\usepackage{cmap} % only with pdftex
+%\usepackage{indentfirst}
+\usepackage{latexsym}
+
+\usepackage[unicode=true]{hyperref}
+\usepackage{listings}
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\lstdefinelanguage{ebnf} {
+  sensitive=false,
+  morecomment=[s]{<}{>},
+  morestring=[b]",
+}
+
+
+\author{Кантеров Глеб}
+\title{YALL reference}
+
+
+
+\begin{document}
+
+\begin{titlepage}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Описание синтаксиса}
+\lstinputlisting[language=ebnf, breaklines=true, breakatwhitespace=true]{syntax.ebnf}
+
+\section{Основные принципы}
+
+Код состоит из выражений, которые вычисляются последовательно. Выражение состоит из фукнции, 
+которая принимает некоторое, больше или равное 1, число параметров, которые могут являться
+константами, переменными или другими выражениями, в этом случае для вычисления функции требуется
+вычислить это выражение, это делается последовательно слева направо. Исключениями являются 
+\textbf{any} и \textbf{do}, их поведение описано далее. При работе с переменными они должны 
+быть определены.
+
+\section{Функции языка}
+
+\subsection{list}
+\textbf{Параметры:} принимает неограниченное число параметров любого типа \\
+\textbf{Возвращает:} значение последнего параметра \\
+\textbf{Использование:} используется главным образом для вычисления последовательности функций \\
+\textbf{Пример:} 
+\begin{lstlisting}[language=lisp]
+(list 
+    (list 1) 
+    (list 1 2)
+) 
+\end{lstlisting}
+
+\subsection{any}
+\textbf{Параметры:} принимает 2 параметра любого типа \\
+\textbf{Возвращает:} равновероятно выбирает 1 или 2 параметр, вычисляет его и возвращает его значение \\
+\textbf{Пример:} 
+\begin{lstlisting}[language=lisp]
+(any 1 
+    (any 2 
+        (any 3 4)
+))
+\end{lstlisting}
+
+\subsection{do}
+\textbf{Параметры:} принимает 2 параметра любого типа \\
+\textbf{Возвращает:} вычисляет первый параметр $n \in [ 0, \inf ] $ раз и возвращает его,
+    если $n = 0$ возвращает значение второго параметра \\
+\textbf{Пример:} 
+\begin{lstlisting}[language=lisp]
+(do 
+    (def 
+        (* n 2)
+        n
+    ) 
+    (def 
+        -1 
+        n
+    )
+)
+\end{lstlisting}
+
+
+\subsection{Арифметические и логические: +, -, /, *, leq, geq, le, gr}
+\textbf{Параметры:} принимает 2 целых параметра \\
+\textbf{Возвращает:} вычисляет арифметическое или логическое выражение, в случае логического 0 это false,
+    не 0 - true. При делении на ноль функция может принимать любое целое значение. \\
+\textbf{Пример:} 
+\begin{lstlisting}[language=lisp]
+(def
+    (+
+        (*  4
+            5
+        )
+        (/  8
+            2
+        )
+    )
+    n
+)
+\end{lstlisting}
+
+
+\subsection{array}
+\textbf{Параметры:} принимает 2 параметра любого типа \\
+\textbf{Возвращает:} объект типа массив, отображение из первого типа данных во второй с уже заданным соответствием
+    между параметрами. (отображение ключ $\rightarrow$ значение) \\
+\textbf{Пример:} Вернется массив с уже заданным 1337 $\rightarrow$ 42
+\begin{lstlisting}[language=lisp]
+(array
+    1337
+    42
+)
+\end{lstlisting}
+
+\subsection{get} 
+\textbf{Параметры:} принимает 2 параметра: параметр типа ключа и массив \\
+\textbf{Возвращает:} значение, соответствующее заданому ключу, если его нет в массиве, то все что угодно \\
+\textbf{Пример:} Вернется 42
+\begin{lstlisting}[language=lisp]
+(get
+    1337
+    (array
+        1337
+        42
+    )
+)
+\end{lstlisting}
+
+\subsection{put} 
+\textbf{Параметры:} принимает 3 параметра: параметр типа ключа, параметр типа значение и идентификатор
+    переменной-массив \\
+\textbf{Возвращает:} массив-копию с измененным отображением ключ $\rightarrow$ значение, где добавлена 
+    переданная как параметры пара \\
+\textbf{Пример:} Вернется массив с уже заданными 1337 $\rightarrow$ 42, 42 $\rightarrow$ 1337, 0 $\rightarrow$ -1
+\begin{lstlisting}[language=lisp]
+(list
+    (def
+        (array
+            1337
+            42
+        )
+        var
+    )
+    (def 
+        (put
+            0
+            -1
+            var
+        )
+        var
+    )
+)
+\end{lstlisting}
+
+\subsection{?}
+\textbf{Параметры:} принимает 1 параметр - целое число \\
+\textbf{Возвращает:} 0, в случае если значение параметра равно 1, иначе значение полагается неопределенным и
+    данное выражение высчитывается заново после вычислениях всех остальных предшедствующих параметров в функции,
+    которой потребовалось вычислить это выражение. Если этой функции нет, т.е оно вычисляет на правах выражения в 
+    коде программы, то аналогично все выражения будут вычисленны заново. \\
+\textbf{Пример:} После завершения вычислений n=42 
+\begin{lstlisting}[language=lisp]
+(list
+    (def 1 n)
+    (do
+        (def
+            (+ n 1)
+            n
+        )
+        0
+    )
+    (? (eq n 42))
+)
+\end{lstlisting}
+
+\subsection{def} 
+\textbf{Параметры:} принимает 2 параметра одинакового типа, второй должен быть идентификатором переменной 
+    или ссылкой на нее \\
+\textbf{Возвращает:} ссылку на второй параметр, создается копия первого параметра и устанавливается 
+    соответствие идентификатор второго параметра $\leftrightarrow$ эта переменная. \\
+\textbf{Пример:} 
+\begin{lstlisting}[language=lisp]
+(def
+    (array
+        1337
+        42
+    )
+    myArray
+)
+\end{lstlisting}
+
+\section{Реализация сортировки массива}
+\lstinputlisting[language=lisp, breaklines=true, breakatwhitespace=true]{sort.yall}
+
+
+\end{document}

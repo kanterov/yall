@@ -1,0 +1,66 @@
+(list
+    (def 5 n)
+
+# ARRAY DEFINITION
+    (def 
+        (array 1 0)
+        p
+    )
+    (def 0 i)
+
+    (do
+        (list
+            (def (+ i 1) i)
+            (def  
+                (put 
+                    i
+                    (+ 1337 i)
+                    p
+                )
+                p
+            )
+            (? (leq i n))
+        )
+        0
+    )
+
+    (? (eq n i))
+
+# BUBBLE SORT HERE
+
+    (def 1 i)
+
+    (do
+        (list
+            (def 1 j)
+            (do 
+                (list
+                    (? (le j n))
+                    (def (get j p) this)
+                    (def (get (+ j 1) p) next)
+
+                    (any
+                        (list
+                            (? (le this next))
+                            (def (put (+ j 1) this p) p)
+                            (def (put j next p) p)
+                        )
+                        (? (geq this next))                       
+                    )
+
+                    (def (+ 1 j) j)
+                )
+                0
+            )
+            (? (eq j n))
+
+            (def (+ 1 i) i)
+            (? (leq i n))
+        )
+        0
+    )
+    (? (eq i n))
+
+# END SORT
+
+)

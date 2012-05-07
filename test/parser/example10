@@ -1,0 +1,13 @@
+(list
+    (def
+        1
+        i
+    )
+    (do
+        (list
+            (def (+ i 1) i)
+            (? (le i 10))
+        )
+        0
+    )
+)
