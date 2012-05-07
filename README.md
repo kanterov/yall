@@ -4,15 +4,19 @@ Educational project at 3rd grade of Novosibirsk State University written in Java
 
 This is academic nondeterministic programming language with 2 non-deterministic operations:
 
-	$ do
+	do
 
 Compute something nondeterministic amount of times or fallback with default something
 
-	$ any
+	any
 
 Chose one of two arguments and compute it. 
 
 You can implement your own functions, see src\ru\nsu\ccfit\kanterov\yall\functions.
+
+Using do and any you can for example assign value to random variable
+
+	(def 42 (any a b))
 
 ## Types
 
